@@ -1,6 +1,6 @@
-#Problema del Vendedor Viajero
+# Problema del Vendedor Viajero#
 
-#Tabla de contenido
+# Tabla de contenido
 
 1. Introducción
 1. Objetivos
