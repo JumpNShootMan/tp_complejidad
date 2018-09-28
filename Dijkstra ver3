@@ -1,0 +1,80 @@
+import math
+
+def str2pair(x):
+    nums = x.split(',')
+    return int(nums[0]), float(nums[1])
+
+def LeeLAP2LAP(filename):
+    G = []
+    file = open(filename)
+    for line in file:
+        G.append([str2pair(x) for x in line.split(' ')])
+        
+    return G
+
+
+
+
+def Busqueda(nodoIni, nodoFin):
+    if nodoIni == nodoFin:
+        print("Llegué al final.")
+        return
+    u = nodoIni                 #u = nodo actual para este recorrido
+    losV = []
+    losW = []    
+    nodosVisitados = []
+    for i in range(4):
+        losV.append(G[u][i][0])
+        losW.append(G[u][i][1])
+    visi = [visitados[losV[0]], visitados[losV[1]], visitados[losV[2]], visitados[losV[3]]]
+    for i in range(4):
+        if visi[i]==False:
+            nodosVisitados.append(i)
+    proxNodo=-1
+    pesoProxNodo=math.inf
+    for j in range(len(nodosVisitados)):
+        if pesoProxNodo>losW[nodosVisitados[j]]:
+            pesoProxNodo=losW[nodosVisitados[j]]
+            proxNodo=losV[nodosVisitados[j]]
+    if proxNodo==-1:
+        for i in range(len(losW)):
+            if losV[i] == nodoFin:
+                proxNodo = nodoFin
+    if proxNodo==-1:
+        proxNodo=losV[3]
+    visitados[proxNodo] = True
+    path.append(proxNodo)
+    if proxNodo == losV[0]:
+        pesoTotal[0]+=losW[0]
+    if proxNodo == losV[1]:
+        pesoTotal[0]+=losW[1]
+    if proxNodo == losV[2]:
+        pesoTotal[0]+=losW[2]
+    if proxNodo == losV[3]:
+        pesoTotal[0]+=losW[3]
+    contMov[0]+=1
+    #print("Nodo Actual",u)
+    Busqueda(proxNodo, nodoFin)    
+    
+G = LeeLAP2LAP('CONEXIONES-1000Nodos.txt')
+n = len(G)                  #n = tamaño de G
+nodoInicial = 0
+print("Nodo de Inicio", nodoInicial)
+nodoFinal = n-1
+visitados = [False]*n       #se crea lista de visitados en False
+visitados[nodoInicial] = True
+path = [nodoInicial]        #se crea el sendero a recorrer
+pesoTotal = [0]
+contMov=[0]
+Busqueda(nodoInicial, nodoFinal)
+print("Path =", path)
+contNV=0
+for i in range(n):
+    if visitados[i] == True:
+        contNV+=1
+print("contNV",contNV)
+print("contMov",contMov)
+print(f"Porcentaje de Nodos Visitados: {100*contNV/145225}%")
+print("Peso Total:", pesoTotal)
+
+
