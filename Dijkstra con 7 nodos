@@ -1,0 +1,92 @@
+import math
+
+def str2pair(x):
+    nums = x.split(',')
+    return int(nums[0]), float(nums[1])
+
+def LeeLAP2LAP(filename):
+    G = []
+    file = open(filename)
+    for line in file:
+        G.append([str2pair(x) for x in line.split(' ')])
+        
+    return G
+    
+ G = LeeLAP2LAP('ejm.txt')
+u = 0
+for V in G:
+    print(u, end='')
+    for v, w in V:
+        #print ('| %d --%f--> %d '%(u+1, w, v), end='')
+        print(f"| [{v},{w}] ", end='')
+    u += 1
+    print('|')
+
+def Busqueda(nodoIni, nodoFin):
+    if nodoIni == nodoFin:
+        print("Llegué al final.")
+        return
+    u = nodoIni                 #u = nodo actual para este recorrido
+    losV = []
+    losW = []
+    nodosVisitados = []
+    for i in range(4):
+        losV.append(G[u][i][0])
+        losW.append(G[u][i][1])
+    visi = [visitados[losV[0]], visitados[losV[1]], visitados[losV[2]], visitados[losV[3]]]
+    for i in range(4):
+        if visi[i]==False:
+            nodosVisitados.append(i)    
+    print("los nodos que puede visitar son", losV)
+    print("los nodos sin visitar", visi)
+    print("los posiciones que se pueden visitar", nodosVisitados)
+    proxNodo=-1
+    pesoProxNodo=math.inf
+    for j in range(len(nodosVisitados)):
+        if pesoProxNodo>losW[nodosVisitados[j]]:
+            pesoProxNodo=losW[nodosVisitados[j]]
+            proxNodo=losV[nodosVisitados[j]]
+    if proxNodo==-1:
+        for i in range(len(losW)):
+            if losV[i] == nodoFin:
+                proxNodo = nodoFin
+    if proxNodo==-1:
+        proxNodo=losV[3]
+    visitados[proxNodo] = True
+    path.append(proxNodo)
+    if proxNodo == losV[0]:
+        pesoTotal[0]+=losW[0]
+    if proxNodo == losV[1]:
+        pesoTotal[0]+=losW[1]
+    if proxNodo == losV[2]:
+        pesoTotal[0]+=losW[2]
+    if proxNodo == losV[3]:
+        pesoTotal[0]+=losW[3]
+    print("visitados = ",visitados)
+    print()
+    print("Nodo Actual", proxNodo)
+    Busqueda(proxNodo, nodoFin)
+    
+
+    
+G = LeeLAP2LAP('ejm.txt')
+n = len(G)                  #n = tamaño de G
+nodoInicial = 0
+print("Nodo Actual", nodoInicial)
+nodoFinal = 6
+visitados = [False]*n        #se crea lista de visitados en False
+visitados[nodoInicial] = True
+#weights = [math.inf]*n     #se crea la lista de pesos en inf
+path = [nodoInicial]        #se crea el sendero a recorrer
+#caminoDePesos = []
+pesoTotal = [0]
+#queue = []                 #cola de prioridad (creo q no lo usaré)
+#weights[s] = 0             #solo el peso del primero es 0
+#hq.heappush(queue, (0, s)) #mete el (0, s) en la cola que
+Busqueda(nodoInicial, nodoFinal)
+print("Path =", path)
+#print("Camino de pesos =", caminoDePesos)
+#for i in range(n):
+#    pesoTotal += caminoDePesos[i]
+print("Peso Total:", pesoTotal)
+
