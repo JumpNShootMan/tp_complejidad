@@ -1,0 +1,118 @@
+FUNCIONES DE ORDENAMIENTO DE LA LISTA
+
+
+import math
+​
+def print_ord(array):
+    for x in range(len(array)):
+        print(array[x])
+
+def arr_load(filename):
+    arr = []
+    ord_arch = []
+    with open(filename) as file:
+        x=10
+        for line in file:
+            if x <=0:
+                break
+            
+            line = line.rstrip("\n")
+            arr.append([float(x) for x in line.split(';')])
+            ord_arch.append(x)
+            x=x-1
+    return arr
+
+def sort_array(arr):
+    for x in range(len(arr)):
+        arr[x].append(math.sqrt(arr[x][0]**2 + arr[x][1]**2))
+        arr[x].append(x)
+    return arr
+
+def Sort(sub_li): 
+    sub_li.sort(key = lambda x: x[2])
+    return sub_li 
+FUNCIONES DE CREACION DE CAMINO
+
+
+import math
+​
+def search_closest(city, arr_cities):
+    closest=0
+    dist=math.inf
+    for x in range(len(arr_cities)):
+        aux = math.sqrt((arr_cities[x][0] - city[0])**2 + (arr_cities[x][1] - city[1])**2)
+        abs(aux)
+        if dist > aux:
+            dist = aux
+            closest = x
+    return closest, dist
+
+def create_aux_Array(arr_cities, connections):
+    count = 0
+    y = 0
+    arr_aux = []
+    arr_aux_pos = []
+    limit = 10
+    rest = len(arr_cities) - len(connections)
+    if rest <10:
+        limit =rest
+    while count <= limit:
+        if y not in connections:
+            arr_aux.append(arr_cities[y-1])
+            arr_aux_pos.append(y)
+            y = y+1
+            count = count+1
+        else:
+            y = y+1
+    return(arr_aux, arr_aux_pos)
+
+def create_path(arr_cities):
+    conections=[0]
+    length=0
+    arr_aux = []
+    arr_aux_pos=[]
+    for x in range(len(arr_cities)):
+        arr_aux, arr_aux_pos = create_aux_Array(arr_cities,conections)
+        conection, aux_length = search_closest(arr_cities[0], arr_aux)
+        conection = arr_aux_pos[conection]
+        conections.append(conection)
+        length = length + aux_length
+    return(conections, length)
+ALGORITMO
+
+
+def algoritmo(filename):
+    #CARGA Y ORDENAMIENTO DE LOS DATOS DE FORMA PITAGORICA
+    arr = arr_load(filename)
+    arr = sort_array(arr)
+    print("DATOS INGRESADOS:")
+    print_ord(arr)
+    arr = Sort(arr)
+    print("\n\n")
+    print("DATOS ORDENADOS PTG:")
+    print_ord(arr)
+    
+    #CREACION DEL CAMINO MAS CORTO
+    order=[]
+    length=math.inf
+    #order tiene las posiciones, pero dentro de arr(lista reordenada), no de
+    # la lista original ingresada: hay que comparar
+    order, length = create_path(arr)
+    order.pop(0)
+    true_order = []
+    print("\n\n")
+    print("ORDEN INDICE EN EL ARREGLO PTG(empieza en 1): ")
+    print(order)
+    
+    for x in range(len(arr)):
+        true_order.append(arr[order[x]-1][3])
+        
+    print("\n\n")
+    print("ORDEN INDICE EN EL ARREGLO INGRESADO(EMPIEZA EN 0): ")
+    print(true_order)
+    print("\n\n")
+    print("RECORRIDO TOTAL:")
+    print(length)
+​
+    
+algoritmo("DatosFinal.txt") 
