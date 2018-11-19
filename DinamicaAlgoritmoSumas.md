@@ -1,5 +1,4 @@
 ```c++
-#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,7 +20,7 @@ public:
 		this->cod = cod;
 		this->x = x;
 		this->y = y;
-	 }
+	}
 	float getx() {
 		return x;
 	}
@@ -43,26 +42,29 @@ public:
 	void setsale() {
 		sale = true;
 	}
-	
+
 };
 
- 
+
 void copiarvalores(vector<Centros> &arreglo) {
 
 	ifstream ip("CentrosPoblados.txt");
 	if (!ip.is_open()) cout << "El archivo ya esta abierto" << endl;
 	for (int i = 0; i < arreglo.size(); i++)
 	{
-		arreglo.push_back(Centros(ip.getline(ip, arreglo[i].getcod(), ';'),
-			ip.getline(ip, arreglo[i].getx(), ';'),
-			ip.getline(ip, arreglo[i].gety(), ';')));
+		string line;
+		float v1, v2, v3;
+		getline(ip, line, ';'); float cod = atof(line.c_str());
+		getline(ip, line, ';'); float x = atof(line.c_str());
+		getline(ip, line, ';'); float y = atof(line.c_str());
+		arreglo.push_back(Centros(cod, x, y));
 	}
 }
 float difx(Centros x, Centros y) {
 	float diff;
 	if (x.getx()>y.getx()) {
-		diff = (x .getx()- y.getx());
-	}	
+		diff = (x.getx() - y.getx());
+	}
 	else if (y.getx()>x.getx()) {
 		diff = (y.getx() - x.getx());
 	}
@@ -88,18 +90,14 @@ float dify(Centros x, Centros y) {
 
 vector<Centros> arreglo(145225);
 
-int rec() {
-
-}
-
 void recorrer(vector<Centros> &arreglo, int i) {
-	float menorx, menory, menorz;
+	float menorx, menory;
 	int coordenadamenor;
 	float sumamenor;
 	Centros auxx, auxy, auxz;
-	int posicion1, posicion2, posicion3;
-	menorz = menory = menorx = 100000000000;
-	for (int i; i < i + 1; i++) {
+	int posicion1, posicion2;
+	menory = menorx = 100000000000;
+	for (int i = 0; i < i + 1; i++) {
 		for (int j = i + 1; j < 145225; j++) {
 			if (arreglo[j].getentra() == false) {
 				if (difx(arreglo[i], arreglo[j]) < menorx) {
@@ -127,21 +125,21 @@ void recorrer(vector<Centros> &arreglo, int i) {
 			coordenadamenor = posicion2;
 			sumamenor = suma2;
 		}
-		else{
+		else {
 
 			coordenadamenor = posicion1;
 			sumamenor = suma1;
 		}
-		
+
 		arreglo[coordenadamenor].setentra();
 	}
-	
-	cout << "El arreglo con codigo: " << arreglo[i].getcod() << " se junta con el arreglo con codigo: " 
+
+	cout << "El arreglo con codigo: " << arreglo[i].getcod() << " se junta con el arreglo con codigo: "
 		<< arreglo[coordenadamenor].getcod() << " con una diferencia en distancia de: " << sumamenor << endl;
 
-	
+
 	i += 1;
-	if (i == arreglo.size()-1) { return; }
+	if (i == arreglo.size() - 1) { return; }
 	else {
 		recorrer(arreglo, i);
 	}
